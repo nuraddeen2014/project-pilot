@@ -9,20 +9,7 @@ export default function Home() {
       {/* Background gradients */}
       <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary/20 blur-[120px] pointer-events-none" />
-      
-      {/* Navbar placeholder */}
-      <header className="fixed top-0 w-full z-50 border-b border-white/5 bg-background/80 backdrop-blur-md">
-        <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-            ProjectPilot
-          </div>
-          <nav>
-            <Link href="/profile">
-              <Button variant="ghost" className="text-sm">Get Started</Button>
-            </Link>
-          </nav>
-        </div>
-      </header>
+
 
       <main className="flex-1 flex flex-col items-center justify-center pt-32 pb-20 px-6 container mx-auto z-10 text-center">
         {/* Hero Section */}
