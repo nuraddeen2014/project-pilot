@@ -38,18 +38,21 @@ An AI-powered final-year project discovery and planning tool for university stud
    npm install
    ```
 
-4. Set up environment variables:
-   Create a `.env.local` file in the root of the project and add your Groq API key:
-   ```env
-   GROQ_API_KEY=your_api_key_here
-   ```
+### Deployment (Netlify)
 
-5. Start the development server:
-   ```bash
-   npm run dev
-   ```
+This project is fully configured for zero-setup deployment on Netlify using the `@netlify/plugin-nextjs`. Netlify will automatically detect the Next.js App Router and deploy your API routes (`src/app/api`) as globally distributed Serverless Functions.
 
-6. Open your browser and navigate to `http://localhost:3000`.
+1. Push your code to GitHub.
+2. Log in to [Netlify](https://app.netlify.com).
+3. Click **Add new site** -> **Import an existing project**.
+4. Select your GitHub repository.
+5. In the build settings, ensure:
+   - **Base directory:** `project-advisor`
+   - **Build command:** `npm run build`
+   - **Publish directory:** `.next`
+6. Add your environment variables:
+   - Key: `GROQ_API_KEY`, Value: *Your actual Groq API Key*
+7. Click **Deploy Site**.
 
 ## License 📄
 This project is licensed under the MIT License.
