@@ -43,7 +43,7 @@ export default function IdeasPage() {
   const generateRoadmap = async (project: ProjectIdea) => {
     setLoadingProject(project.title)
     try {
-      const response = await fetch("/api/generateRoadmap", {
+      const response = await fetch("/.netlify/functions/generateRoadmap", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(project)

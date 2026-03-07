@@ -1,12 +1,21 @@
-import { NextResponse } from "next/server";
+import { Handler } from "@netlify/functions";
 import Groq from "groq-sdk";
 
+// Initialize the Groq client
+// Reads the GROQ_API_KEY securely from environment variables
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-export async function POST(request: Request) {
-  try {
-    const project = await request.json();
+export const handler: Handler = async (event) => {
+  // Ensure we only handle POST requests
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: "Method Not Allowed" };
+  }
 
+  try {
+    // Parse the selected project data from the request body
+    const project = JSON.parse(event.body || "{}");
+
+    // Construct the prompt to act as an execution planner
     const prompt = `You are a senior university supervisor.
 
 Given the project below, create a structured project execution plan.
@@ -35,20 +44,32 @@ Example format:
   "documentation_structure": ["1. Introduction", "2. Methodology"]
 }`;
 
+    // Call Groq AI to generate the roadmap
     const completion = await groq.chat.completions.create({
       messages: [{ role: "user", content: prompt }],
-      model: "llama-3.3-70b-versatile",
+      model: "llama-3.3-70b-versatile", // Using the required LLaMA 3 model
       temperature: 0.7,
-      response_format: { type: "json_object" }
+      response_format: { type: "json_object" } // Guarantee structured JSON
     });
 
     const resultText = completion.choices[0]?.message?.content || "{}";
     const resultJson = JSON.parse(resultText);
 
-    return NextResponse.json(resultJson);
+    // Return the successful structured JSON payload
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(resultJson),
+    };
 
   } catch (error) {
-    console.error("AI Roadmap Error", error);
-    return NextResponse.json({ error: "Failed to generate project roadmap" }, { status: 500 });
+    console.error("AI Roadmap Error:", error);
+    // Graceful error handling
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Failed to generate project roadmap" }),
+    };
   }
-}
+};

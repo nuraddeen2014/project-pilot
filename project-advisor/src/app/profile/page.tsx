@@ -24,7 +24,7 @@ export default function ProfilePage() {
     setLoading(true)
     
     try {
-      const response = await fetch("/api/generateIdeas", {
+      const response = await fetch("/.netlify/functions/generateIdeas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
