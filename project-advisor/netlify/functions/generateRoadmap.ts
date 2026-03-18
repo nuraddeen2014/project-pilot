@@ -16,32 +16,46 @@ export const handler: Handler = async (event) => {
     const project = JSON.parse(event.body || "{}");
 
     // Construct the prompt to act as an execution planner
-    const prompt = `You are a senior university supervisor.
+    const prompt = `Create a clear, student-friendly weekly roadmap for the following final-year project:
 
-Given the project below, create a structured project execution plan.
+Project Title: ${project.title}
+Project Description: ${project.description}
+Student Course: ${project.course || "Not specified"}
 
-Project:
-${JSON.stringify(project, null, 2)}
+Instructions:
 
-Return JSON ONLY with:
-project_phases (array of objects with name, description, duration_weeks)
-milestones (array of strings)
-timeline (array of strings)
-documentation_structure (array of strings)
+1. Break the project into weekly steps (6-12 weeks depending on complexity)
 
-Example format:
+2. For each week include:
+   - week_number
+   - phase (e.g., Research, Planning, Execution, Writing, Review)
+   - tasks (specific and actionable)
+   - risks_or_challenges
+   - expected_output
+
+3. Adapt the roadmap to the nature of the field:
+   - Technical fields -> include development, testing
+   - Non-technical fields -> include research, analysis, writing, fieldwork, creative production
+
+4. Keep the roadmap:
+   - Practical and realistic
+   - Easy to follow
+   - Academically relevant
+
+5. Avoid overly technical or corporate language - this is for a student, not a company.
+
+Return ONLY valid JSON in this exact format:
 
 {
-  "project_phases": [
+  "roadmap": [
     {
-      "name": "Phase 1: Research",
-      "description": "Literature review and setup",
-      "duration_weeks": 2
+      "week_number": 1,
+      "phase": "string",
+      "tasks": ["string", "string"],
+      "risks_or_challenges": "string",
+      "expected_output": "string"
     }
-  ],
-  "milestones": ["Completed architecture diagram", "MVP ready"],
-  "timeline": ["Week 1: Gather requirements", "Week 2: Setup database"],
-  "documentation_structure": ["1. Introduction", "2. Methodology"]
+  ]
 }`;
 
     // Call Groq AI to generate the roadmap

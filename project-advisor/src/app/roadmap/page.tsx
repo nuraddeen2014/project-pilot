@@ -8,10 +8,13 @@ import { Badge } from "@/components/ui/Badge"
 import { FileText, Target, CalendarDays, ArrowLeft, CheckCircle2 } from "lucide-react"
 
 type RoadmapData = {
-  project_phases: { name: string, description: string, duration_weeks: number }[]
-  milestones: string[]
-  timeline: string[]
-  documentation_structure: string[]
+  roadmap: {
+    week_number: number
+    phase: string
+    tasks: string[]
+    risks_or_challenges: string
+    expected_output: string
+  }[]
 }
 
 export default function RoadmapPage() {
@@ -49,85 +52,58 @@ export default function RoadmapPage() {
           <p className="text-zinc-400 text-lg">Your customized execution plan developed by AI to ensure timely and successful completion.</p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center text-primary">
-                  <CalendarDays className="w-5 h-5 mr-2" /> Project Phases
-                </CardTitle>
+        <div className="space-y-6">
+          {data.roadmap?.map((week, i) => (
+            <Card key={i} className="relative overflow-hidden border-white/10 hover:border-primary/50 transition-colors">
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-accent"></div>
+              <CardHeader className="pl-6 pb-2">
+                <div className="flex justify-between items-start gap-4 mb-2">
+                  <Badge variant="outline" className="text-primary border-primary/20 bg-primary/10">
+                    Week {week.week_number}
+                  </Badge>
+                  <Badge variant="glass" className="text-zinc-300">
+                    {week.phase}
+                  </Badge>
+                </div>
+                <CardTitle className="text-xl">Weekly Objectives</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="relative border-l border-white/10 ml-3 space-y-8">
-                  {data.project_phases?.map((phase, i) => (
-                    <div key={i} className="relative pl-8">
-                      <div className="absolute w-4 h-4 bg-primary rounded-full -left-[8.5px] top-1 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
-                      <h3 className="text-xl font-semibold mb-1">{phase.name}</h3>
-                      <Badge variant="outline" className="mb-3 text-[10px]">{phase.duration_weeks} Weeks</Badge>
-                      <p className="text-zinc-400">{phase.description}</p>
+              <CardContent className="pl-6">
+                <div className="grid md:grid-cols-2 gap-6 mt-4">
+                  <div>
+                    <h4 className="flex items-center text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3">
+                      <Target className="w-4 h-4 mr-2" /> Tasks
+                    </h4>
+                    <ul className="space-y-2">
+                      {week.tasks?.map((task, j) => (
+                        <li key={j} className="flex items-start text-sm text-zinc-300">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500 mr-2 flex-shrink-0 mt-0.5" />
+                          <span>{task}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="flex items-center text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-2">
+                         Risks & Challenges
+                      </h4>
+                      <p className="text-sm text-amber-200/80 bg-amber-500/10 p-3 rounded-md border border-amber-500/20">
+                        {week.risks_or_challenges}
+                      </p>
                     </div>
-                  ))}
+                    <div>
+                      <h4 className="flex items-center text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-2">
+                        <FileText className="w-4 h-4 mr-2" /> Expected Output
+                      </h4>
+                      <p className="text-sm text-blue-200/80 bg-blue-500/10 p-3 rounded-md border border-blue-500/20">
+                        {week.expected_output}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center text-secondary">
-                  <Target className="w-5 h-5 mr-2" /> Weekly Timeline
-                </CardTitle>
-                <CardDescription>A granular breakdown of your activities.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-4">
-                  {data.timeline?.map((item, i) => (
-                    <li key={i} className="flex items-start bg-white/5 p-4 rounded-lg border border-white/5">
-                      <CheckCircle2 className="w-5 h-5 text-secondary mr-3 flex-shrink-0 mt-0.5" />
-                      <span className="text-zinc-300">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="space-y-8">
-            <Card className="bg-zinc-900 border-accent/20">
-              <CardHeader>
-                <CardTitle className="flex items-center text-accent">
-                  <Target className="w-5 h-5 mr-2" /> Milestones
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  {data.milestones?.map((milestone, i) => (
-                    <li key={i} className="flex items-center text-sm text-zinc-300">
-                      <div className="w-1.5 h-1.5 rounded-full bg-accent mr-2"></div>
-                      {milestone}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center text-zinc-100">
-                  <FileText className="w-5 h-5 mr-2" /> Documentation
-                </CardTitle>
-                <CardDescription>Required report structure</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {data.documentation_structure?.map((doc, i) => (
-                    <li key={i} className="text-sm font-medium text-zinc-400 p-2 bg-black/20 rounded">
-                      {doc}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
+          ))}
         </div>
       </div>
     </div>

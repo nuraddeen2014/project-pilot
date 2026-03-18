@@ -10,10 +10,11 @@ import { Clock, Layers, Sparkles, Loader2 } from "lucide-react"
 type ProjectIdea = {
   title: string
   description: string
-  technologies: string[]
-  complexity_level: string
-  estimated_effort_hours: number
-  expected_outcomes: string
+  why_this_fits: string
+  approach_or_methods: string | string[]
+  complexity: string
+  estimated_time: string | number
+  expected_outcome: string
 }
 
 type IdeasData = {
@@ -43,10 +44,12 @@ export default function IdeasPage() {
   const generateRoadmap = async (project: ProjectIdea) => {
     setLoadingProject(project.title)
     try {
+      const course = sessionStorage.getItem("studentCourse") || "Not specified"
+      const payload = { ...project, course }
       const response = await fetch("/.netlify/functions/generateRoadmap", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(project)
+        body: JSON.stringify(payload)
       })
       if (!response.ok) throw new Error("Failed to generate roadmap")
       
@@ -69,11 +72,11 @@ export default function IdeasPage() {
         <div className="flex justify-between items-start gap-4 mb-2">
           <Badge variant={category === "innovative" ? "default" : category === "advanced" ? "secondary" : "outline"}>
             {category === "innovative" && <Sparkles className="w-3 h-3 mr-1" />}
-            {project.complexity_level}
+            {project.complexity}
           </Badge>
           <div className="flex items-center text-xs text-zinc-400">
             <Clock className="w-3 h-3 mr-1" />
-            {project.estimated_effort_hours}h
+            {project.estimated_time} weeks
           </div>
         </div>
         <CardTitle className="text-xl">{project.title}</CardTitle>
@@ -82,16 +85,21 @@ export default function IdeasPage() {
       <CardContent className="flex-1">
         <div className="space-y-4">
           <div>
-            <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2 flex items-center"><Layers className="w-3 h-3 mr-1"/> Tech Stack</h4>
+            <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Why This Fits</h4>
+            <p className="text-sm text-zinc-300 italic">"{project.why_this_fits}"</p>
+          </div>
+          <div>
+            <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2 flex items-center"><Layers className="w-3 h-3 mr-1"/> Approach / Methods</h4>
             <div className="flex flex-wrap gap-2">
-              {project.technologies?.map(tech => (
-                 <Badge key={tech} variant="glass" className="text-[10px]">{tech}</Badge>
-              ))}
+              {Array.isArray(project.approach_or_methods) 
+                ? project.approach_or_methods.map((method, i) => <Badge key={i} variant="glass" className="text-[10px]">{method}</Badge>)
+                : <p className="text-sm text-zinc-300">{project.approach_or_methods}</p>
+              }
             </div>
           </div>
           <div>
             <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Expected Outcome</h4>
-            <p className="text-sm text-zinc-300">{project.expected_outcomes}</p>
+            <p className="text-sm text-zinc-300">{project.expected_outcome}</p>
           </div>
         </div>
       </CardContent>

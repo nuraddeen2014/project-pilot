@@ -33,9 +33,9 @@ export default function ProfilePage() {
       if (!response.ok) {
         throw new Error("Failed to generate ideas")
       }
-      
       const data = await response.json()
       sessionStorage.setItem("projectIdeas", JSON.stringify(data))
+      sessionStorage.setItem("studentCourse", formData.course)
       router.push("/ideas")
     } catch (error) {
       console.error(error)
