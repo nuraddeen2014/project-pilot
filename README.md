@@ -10,9 +10,9 @@ An AI-powered final-year project discovery and planning tool for university stud
 
 ## Tech Stack 🛠️
 - **Frontend**: Next.js (App Router), React 19, Tailwind CSS v4
-- **Backend**: Next.js API Routes (Serverless ready)
+- **Backend**: Next.js APIs on Leapcell
 - **AI Integration**: Groq SDK (`llama-3.3-70b-versatile`)
-- **Deployment**: Vercel / Netlify ready
+- **Deployment**: Leapcell
 
 ## Getting Started 🚀
 
@@ -38,21 +38,18 @@ An AI-powered final-year project discovery and planning tool for university stud
    npm install
    ```
 
-### Deployment (Netlify)
+### Deployment (Leapcell)
 
-This project is fully configured for zero-setup deployment on Netlify using the `@netlify/plugin-nextjs`. Netlify will automatically detect the Next.js App Router and deploy your API routes (`src/app/api`) as globally distributed Serverless Functions.
+This project is fully configured for deployment on Leapcell.
 
 1. Push your code to GitHub.
-2. Log in to [Netlify](https://app.netlify.com).
-3. Click **Add new site** -> **Import an existing project**.
-4. Select your GitHub repository.
-5. In the build settings, ensure:
-   - **Base directory:** `project-advisor`
-   - **Build command:** `npm run build`
-   - **Publish directory:** `.next`
-6. Add your environment variables:
+2. Log in to [Leapcell](https://leapcell.io).
+3. Create a new service and select your GitHub repository.
+4. Set the **Root directory** to `project-advisor`.
+5. Ensure your Build command is set up for Next.js (`npm run build`).
+6. Add your environment variable:
    - Key: `GROQ_API_KEY`, Value: *Your actual Groq API Key*
-7. Click **Deploy Site**.
+7. Deploy Site!
 
 ## License 📄
 This project is licensed under the MIT License.
