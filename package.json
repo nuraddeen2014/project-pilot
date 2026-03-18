@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "build": "cd project-advisor && npm install && npm run build",
+    "start": "cd project-advisor && npm run start"
+  },
   "dependencies": {
     "clsx": "^2.1.1",
     "framer-motion": "^12.35.1",
