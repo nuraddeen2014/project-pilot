@@ -42,14 +42,8 @@ An AI-powered final-year project discovery and planning tool for university stud
 
 This project is fully configured for deployment on Leapcell.
 
-1. Push your code to GitHub.
-2. Log in to [Leapcell](https://leapcell.io).
-3. Create a new service and select your GitHub repository.
-4. Set the **Root directory** to `project-advisor`.
-5. Ensure your Build command is set up for Next.js (`npm run build`).
-6. Add your environment variable:
-   - Key: `GROQ_API_KEY`, Value: *Your actual Groq API Key*
-7. Deploy Site!
+## Live on:
+https://project-pilot-nuraddeen2014997-7kwhghjg.leapcell.dev
 
 ## License 📄
 This project is licensed under the MIT License.
