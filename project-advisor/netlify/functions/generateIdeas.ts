@@ -107,8 +107,26 @@ Return ONLY valid JSON. The output must strictly follow this exact structure and
       response_format: { type: "json_object" } // Enforce structured JSON output
     });
 
-    const resultText = completion.choices[0]?.message?.content || "{}";
-    const resultJson = JSON.parse(resultText);
+    const raw = completion.choices[0]?.message?.content || "{}";
+
+    const cleaned = raw
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    let data;
+
+    try {
+      data = JSON.parse(cleaned);
+    } catch (err) {
+      console.error("JSON PARSE ERROR:", err);
+      console.log("RAW RESPONSE:", raw);
+      throw new Error("Invalid JSON from AI");
+    }
+
+    if (!data.innovative || !data.advanced || !data.standard) {
+      throw new Error("Invalid structure from AI");
+    }
 
     // Return the generated ideas as a successful JSON response
     return {
@@ -116,7 +134,7 @@ Return ONLY valid JSON. The output must strictly follow this exact structure and
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(resultJson),
+      body: JSON.stringify(data),
     };
 
   } catch (error) {
